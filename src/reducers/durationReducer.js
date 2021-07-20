@@ -1,4 +1,4 @@
-export default (state = [], action) => {
+export const durationReducer = (state = [], action) => {
 	switch (action.type) {
 		case 'FETCH_DURATION':
 			return action.payload;

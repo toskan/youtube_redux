@@ -1,11 +1,12 @@
 import React from 'react';
 import VideoResults from './VideoResults';
 import SelectedVideo from './SelectedVideo';
+import SearchBar from './SearchBar';
 
 const App = () => {
 	return (
 		<div className="ui container">
-			{/* <SearchBar onFormSubmit={this.onTermSubmit} /> */}
+			<SearchBar />
 			<div className="ui grid">
 				<div className="ui row">
 					<div className="eleven wide column">

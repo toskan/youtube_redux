@@ -1,13 +1,17 @@
 import youTube from '../components/apis/youTube';
 import _ from 'lodash';
 
-export const fetchResults = () => async (dispatch) => {
-	const response = await youTube.get(
-		`/search?q=antwerp&key=${process.env.REACT_APP_API_KEY}&maxResults=50&videoDuration=short&type=video&part=snippet`
-	);
+export const fetchResults =
+	(search = `ikaria`) =>
+	async (dispatch) => {
+		const response = await youTube.get(
+			`/search?q=${search}&key=${process.env.REACT_APP_API_KEY}&maxResults=50&videoDuration=short&type=video&part=snippet`
+		);
 
-	dispatch({ type: 'FETCH_RESULTS', payload: response.data });
-};
+		dispatch({ type: 'FETCH_RESULTS', payload: response.data });
+
+		getIds();
+	};
 
 export const fetchDuration = (ids) => async (dispatch) => {
 	const response = await youTube.get(
@@ -21,6 +25,13 @@ export const clickVideo = (video) => (dispatch) => {
 	// console.log(video);
 	dispatch({ type: 'SELECT_VIDEO', payload: video });
 };
+
+export const querySubmitted =
+	(query = {}) =>
+	(dispatch) => {
+		console.log(query);
+		dispatch({ type: 'QUERY_SUBMIT', payload: query });
+	};
 
 export const getIds =
 	(ids = []) =>

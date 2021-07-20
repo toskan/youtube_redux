@@ -3,9 +3,12 @@ import { connect } from 'react-redux';
 import './VideoItem.css';
 import { clickVideo } from '../actions';
 
-const VideoItem = ({ video, clickVideo }) => {
+const VideoItem = ({ state, video, clickVideo }) => {
 	return (
-		<div className="item video-item" onClick={() => clickVideo(video)}>
+		<div
+			className="item video-item"
+			onClick={() => (clickVideo(video), console.log(state))}
+		>
 			<img
 				alt={video.snippet.title}
 				className="ui image"
@@ -21,6 +24,7 @@ const VideoItem = ({ video, clickVideo }) => {
 const mapStateToProps = (state) => {
 	return {
 		videoSelected: state.videoSelected,
+		state: state,
 	};
 };
 
