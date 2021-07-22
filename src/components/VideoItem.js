@@ -7,7 +7,15 @@ const VideoItem = ({ state, video, clickVideo }) => {
 	return (
 		<div
 			className="item video-item"
-			onClick={() => (clickVideo(video), console.log(state))}
+			onClick={() => (
+				clickVideo(video),
+				console.log(
+					state.duration.items[10].contentDetails.duration
+						.substring(2)
+						.replace(/[A-Z]/g, ':')
+						.slice(0, -1)
+				)
+			)}
 		>
 			<img
 				alt={video.snippet.title}

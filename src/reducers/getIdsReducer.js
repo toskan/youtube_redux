@@ -1,6 +1,8 @@
-export const getIdsReducer = (ids = '') => {
-	return {
-		type: 'GET_IDS',
-		payload: ids,
-	};
+export const getIdsReducer = (ids = '', action) => {
+	switch (action.type) {
+		case 'GET_IDS':
+			return action.payload;
+		default:
+			return ids;
+	}
 };
