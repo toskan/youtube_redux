@@ -1,25 +1,22 @@
 import youTube from '../components/apis/youTube';
 import _ from 'lodash';
 
-export const fetchResultsR = () => async (dispatch, getState) => {
-	await dispatch(fetchResults());
+export const fetchResults = () => async (dispatch, getState) => {
+	await dispatch(fetchInfo(getState().query.search));
 	dispatch(getIds());
-	console.log(getState().ids);
 	await dispatch(fetchDuration(getState().ids));
 	dispatch(addPlayTime());
 };
 
-export const fetchResults =
-	(search = `ikaria`) =>
-	async (dispatch) => {
-		const response = await youTube.get(
-			`/search?q=${search}&key=${process.env.REACT_APP_API_KEY}&maxResults=50&videoDuration=short&type=video&part=snippet`
-		);
+export const fetchInfo = (search) => async (dispatch) => {
+	const response = await youTube.get(
+		`/search?q=${search}&key=${process.env.REACT_APP_API_KEY}&maxResults=50&videoDuration=short&type=video&part=snippet`
+	);
 
-		dispatch({ type: 'FETCH_RESULTS', payload: response.data });
+	dispatch({ type: 'FETCH_RESULTS', payload: response.data });
 
-		getIds();
-	};
+	// getIds();
+};
 
 export const fetchDuration = (ids) => async (dispatch) => {
 	const response = await youTube.get(
@@ -47,36 +44,67 @@ export const getIds =
 		_.chain(getState().results.items)
 			.forEach((e) => ids.push(`${e.id.videoId}`))
 			.value();
-		console.log(ids.join(','));
 		dispatch({ type: 'GET_IDS', payload: ids.join(',') });
 	};
 
-// .duration.items.map((e) =>
-// 					console.log(
-// 						!e.contentDetails.duration
-// 							.substring(2)
-// 							.split('M')[0]
-// 							.includes('S') ?
-// 					)
-// 				)
-
 export const addPlayTime =
-	(playTime = []) =>
+	(playTime = [], time = '', timeObj = {}, ave = 0) =>
 	(dispatch, getState) => {
-		_.chain(getState().duration.items).forEach((e) =>
-			playTime.push(
-				e.contentDetails.duration.substring(2).replace(/[A-Z]/g, ':')
+		getState().duration.items.forEach((e, i) => {
+			time = e.contentDetails.duration.substring(2);
+			if (!time.includes('H')) {
+				time = `00H${time}`;
+			}
+			if (!time.includes('M')) {
+				if (time.includes('S')) {
+					time = `${time.slice(
+						0,
+						time.indexOf('H') + 1
+					)}00M${time.slice(time.indexOf('H') + 1, time.length)}`;
+				} else {
+					time = time = `${time.slice(0, time.indexOf('H') + 1)}00M$`;
+				}
+			}
+			if (!time.includes('S')) {
+				time = `${time.slice(0, time.indexOf('M') + 1)}00S`;
+			}
+			time = time
+				.split(/[A-Z]/g)
+				.map((e, i) =>
+					!i
+						? Number(e) * 3600
+						: i === 1
+						? Number(e) * 60
+						: i === 2
+						? Number(e)
+						: 0
+				)
+				.reduce((a, e) => a + e);
+			timeObj = {
+				seconds: time,
+				id: e.id,
+			};
+			playTime.push(timeObj);
+		});
+
+		ave =
+			((Number(getState().query.maxDur) +
+				Number(getState().query.minDur)) /
+				2) *
+			60;
+		playTime.sort(
+			(a, b) => Math.abs(ave - a.seconds) - Math.abs(ave - b.seconds)
+		);
+
+		dispatch({ type: 'ADD_DURATION', payload: playTime });
+
+		getState().results.items.findIndex(
+			(x) => x.id.videoId === playTime[2].id
+		);
+		playTime.map((e, i) =>
+			console.log(
+				getState().results.items.findIndex((x) => x.id.videoId === e.id)
 			)
 		);
-		dispatch({ type: 'ADD_DURATION', payload: playTime });
 		console.log(playTime);
 	};
-
-//  [
-// 		...playTime,
-// 		{
-// 			['duration']: e.contentDetails.duration
-// 				.substring(2)
-// 				.replace(/[A-Z]/g, ':'),
-// 		},
-// 	]);

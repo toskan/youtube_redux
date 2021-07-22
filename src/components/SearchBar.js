@@ -1,19 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { querySubmitted, fetchResults, getIds } from '../actions';
 
-const SearchBar = ({
-	results,
-	query,
-	querySubmitted,
-	fetchResults,
-	getIds,
-}) => {
-	// useEffect(() => {
-	// 	getIds();
-	// 	console.log('hey');
-	// }, [fetchResults]);
-
+const SearchBar = ({ query, querySubmitted, fetchResults, getIds }) => {
 	const onSubmit = (e) => {
 		e.preventDefault();
 		fetchResults(query.search);

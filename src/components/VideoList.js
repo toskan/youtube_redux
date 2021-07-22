@@ -4,18 +4,12 @@ import VideoItem from './VideoItem';
 import { fetchResults } from '../actions';
 
 const VideoList = ({ results }) => {
-	// useEffect(() => {
-	// 	fetchResults();
-	// });
-
-	console.log(results);
 	return (
 		<div className="ui relaxed divided list">
 			{results &&
 				results.map((video) => (
 					<VideoItem video={video} key={video.id.videoId} />
 				))}
-			hello
 		</div>
 	);
 };
