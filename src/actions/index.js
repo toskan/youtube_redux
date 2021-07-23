@@ -15,8 +15,6 @@ export const fetchInfo = (search) => async (dispatch) => {
 	);
 
 	dispatch({ type: 'FETCH_RESULTS', payload: response.data });
-
-	// getIds();
 };
 
 export const fetchDuration = (ids) => async (dispatch) => {
@@ -28,7 +26,6 @@ export const fetchDuration = (ids) => async (dispatch) => {
 };
 
 export const clickVideo = (video) => (dispatch) => {
-	// console.log(video);
 	dispatch({ type: 'SELECT_VIDEO', payload: video });
 };
 
@@ -109,3 +106,6 @@ export const querySubmitted =
 	(dispatch) => {
 		dispatch({ type: 'QUERY_SUBMIT', payload: query });
 	};
+
+//duration: short (<4min) medium (4-20 including) long (>20min)
+//use relatedToVideo?

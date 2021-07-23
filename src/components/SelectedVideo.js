@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 const SelectedVideo = ({ videoSelected }) => {
 	if (!videoSelected) {
-		return <div>Loading ... </div>;
+		return <div>Select a Video ... </div>;
 	}
 	return (
 		<div>
