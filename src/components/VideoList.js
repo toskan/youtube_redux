@@ -7,8 +7,8 @@ const VideoList = ({ results, order }) => {
 	return (
 		<div className="ui relaxed divided list">
 			{results &&
-				results.map((video, i, a) => (
-					<VideoItem video={video} key={video.id.videoId} />
+				order.map((e) => (
+					<VideoItem video={results[e]} key={results[e].id.videoId} />
 				))}
 		</div>
 	);
