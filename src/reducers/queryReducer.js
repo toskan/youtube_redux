@@ -1,5 +1,5 @@
 export const queryReducer = (
-	query = { search: '', minDur: 3, maxDur: 8 },
+	query = { search: '', minDur: '', maxDur: '' },
 	action
 ) => {
 	switch (action.type) {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { querySubmitted, fetchResults, getIds } from '../actions';
+import { querySubmitted, fetchResults } from '../actions';
 
-const SearchBar = ({ query, querySubmitted, fetchResults, getIds }) => {
+const SearchBar = ({ query, querySubmitted, fetchResults }) => {
 	const onSubmit = (e) => {
 		e.preventDefault();
 		fetchResults(query.search);
@@ -66,5 +66,4 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
 	querySubmitted,
 	fetchResults,
-	getIds,
 })(SearchBar);

@@ -6,6 +6,7 @@ export const fetchResults = () => async (dispatch, getState) => {
 	dispatch(getIds());
 	await dispatch(fetchDuration(getState().ids));
 	dispatch(addPlayTime());
+	dispatch(indexOrder());
 };
 
 export const fetchInfo = (search) => async (dispatch) => {
@@ -30,13 +31,6 @@ export const clickVideo = (video) => (dispatch) => {
 	// console.log(video);
 	dispatch({ type: 'SELECT_VIDEO', payload: video });
 };
-
-export const querySubmitted =
-	(query = {}) =>
-	(dispatch) => {
-		console.log(query);
-		dispatch({ type: 'QUERY_SUBMIT', payload: query });
-	};
 
 export const getIds =
 	(ids = []) =>
@@ -97,14 +91,21 @@ export const addPlayTime =
 		);
 
 		dispatch({ type: 'ADD_DURATION', payload: playTime });
+	};
 
-		getState().results.items.findIndex(
-			(x) => x.id.videoId === playTime[2].id
-		);
-		playTime.map((e, i) =>
-			console.log(
+export const indexOrder =
+	(order = []) =>
+	(dispatch, getState) => {
+		getState().playTime.forEach((e, i) =>
+			order.push(
 				getState().results.items.findIndex((x) => x.id.videoId === e.id)
 			)
 		);
-		console.log(playTime);
+		dispatch({ type: 'INDEX_ORDER', payload: order });
+	};
+
+export const querySubmitted =
+	(query = {}) =>
+	(dispatch) => {
+		dispatch({ type: 'QUERY_SUBMIT', payload: query });
 	};

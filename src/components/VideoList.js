@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import VideoItem from './VideoItem';
 import { fetchResults } from '../actions';
 
-const VideoList = ({ results }) => {
+const VideoList = ({ results, order }) => {
 	return (
 		<div className="ui relaxed divided list">
 			{results &&
-				results.map((video) => (
+				results.map((video, i) => (
 					<VideoItem video={video} key={video.id.videoId} />
 				))}
 		</div>
@@ -17,6 +17,7 @@ const VideoList = ({ results }) => {
 const mapStateToProps = (state) => {
 	return {
 		results: state.results.items,
+		order: state.order,
 	};
 };
 
